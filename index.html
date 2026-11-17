@@ -77,7 +77,37 @@ footer{display:none!important}
 #dj-layout-notice{font-size:13px;color:#637c8d}
 @media(max-width:550px){#danjion-dashboard{padding:13px}#danjion-dashboard h2{font-size:21px}.dj-grid button{font-size:14px;min-height:67px}.dj-shortcuts button{font-size:12px}.dj-links button{font-size:12px}}
 </style>
-<style>#contact-hub>.contact-cards{display:none!important}#contact-hub>h2{display:none!important}#contact-hub>.muted{display:none!important}</style><style>.lh-panel{border:2px solid #cce5d3!important;background:#f7fcf8!important}.lh-panel h3{margin-top:0}.lh-percent{font-size:36px;font-weight:850;color:#087a44}.lh-meter{position:relative;height:18px;background:#e4ebe8;border-radius:20px;overflow:hidden}.lh-meter>div:first-child{height:100%;width:0;background:#169455;transition:width .2s}.lh-goal-marker{position:absolute;left:65%;top:0;bottom:0;width:3px;background:#e39a1b}.lh-panel .choice-row{display:flex;align-items:center;gap:8px}.lh-panel .choice-row input{width:auto}</style></head><body><main><header><div class="brand"><img src="logo.svg" alt="단지온결 로고"><div><h1>단지온결</h1><div class="sub">우리 아파트 생활을 더 편리하게</div></div></div><span class="badge">우리 아파트 생활을 더 편리하게</span></header><section id="home-hero" aria-label="단지온결 소개"><div class="hero-copy"><h2>함께 만드는<br><em>더 좋은</em> 우리 아파트</h2><p>입주민, 관리사무소, 방역업체가 함께하는<br>스마트한 아파트 관리 서비스</p></div></section>
+<style>#contact-hub>.contact-cards{display:none!important}#contact-hub>h2{display:none!important}#contact-hub>.muted{display:none!important}</style><style>.lh-panel{border:2px solid #cce5d3!important;background:#f7fcf8!important}.lh-panel h3{margin-top:0}.lh-percent{font-size:36px;font-weight:850;color:#087a44}.lh-meter{position:relative;height:18px;background:#e4ebe8;border-radius:20px;overflow:hidden}.lh-meter>div:first-child{height:100%;width:0;background:#169455;transition:width .2s}.lh-goal-marker{position:absolute;left:65%;top:0;bottom:0;width:3px;background:#e39a1b}.lh-panel .choice-row{display:flex;align-items:center;gap:8px}.lh-panel .choice-row input{width:auto}</style>
+<style id="danjion-layout-unification">
+/* Consistent horizontal edges and spacing for the main menu and apartment finder. */
+#danjion-dashboard,#access{width:100%;max-width:100%;margin:18px 0;padding:23px;border-radius:20px;box-sizing:border-box}
+#danjion-dashboard{box-shadow:0 5px 20px #17334d0b}
+#danjion-dashboard h2,#access>h2{font-size:clamp(22px,3.4vw,29px);line-height:1.35;margin:0 0 16px;color:#104f8b}
+.dj-section-label{font-size:17px;margin:20px 0 10px;color:#17334d}
+.dj-grid,.dj-shortcuts,.dj-roles{gap:10px}
+.dj-shortcuts{margin-top:0}
+.dj-shortcuts button{min-height:74px;line-height:1.5;white-space:normal;overflow-wrap:break-word}
+.dj-roles{margin-top:0}
+/* The duplicated service-guide row and legacy role tiles are redundant, not deleted. */
+#danjion-dashboard>.dj-links,#bottom-roles{display:none!important}
+/* The original inquiry controls remain in the DOM, but are displayed only when invoked. */
+#contact-hub:not(.dj-contact-open){display:none!important}
+#contact-hub.dj-contact-open{margin:18px 0;padding:23px;border-radius:20px}
+#access{scroll-margin-top:12px}
+#access #region-buttons,#access #district-buttons{gap:8px}
+#access #home-apt-results{max-height:420px;overflow-y:auto;overscroll-behavior:contain}
+#access h3{margin-top:22px;margin-bottom:12px}
+@media(max-width:650px){
+ #danjion-dashboard,#access,#contact-hub.dj-contact-open{padding:16px;margin:12px 0;border-radius:17px}
+ .dj-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .dj-shortcuts button{min-height:68px;font-size:14px;padding:10px 8px}
+ .dj-grid button{font-size:14px;min-height:64px;padding:11px}
+ .dj-grid .dj-wide{font-size:16px}
+ .dj-roles button{font-size:14px;padding:12px 7px}
+ #access h3{margin-top:18px}
+}
+</style>
+</head><body><main><header><div class="brand"><img src="logo.svg" alt="단지온결 로고"><div><h1>단지온결</h1><div class="sub">우리 아파트 생활을 더 편리하게</div></div></div><span class="badge">우리 아파트 생활을 더 편리하게</span></header><section id="home-hero" aria-label="단지온결 소개"><div class="hero-copy"><h2>함께 만드는<br><em>더 좋은</em> 우리 아파트</h2><p>입주민, 관리사무소, 방역업체가 함께하는<br>스마트한 아파트 관리 서비스</p></div></section>
 <section id="danjion-dashboard" aria-label="단지온 간편 메뉴">
 <h2>⚡ 간편 문의</h2>
 <div class="dj-grid">
@@ -87,12 +117,14 @@ footer{display:none!important}
 <button type="button" data-dj-inquiry="문자 접수 대행">✉️ 문자 접수 대행　›</button>
 <button type="button" class="dj-wide" data-dj-inquiry="일반 문의">🎧 모든 문의 접수　›</button>
 </div>
+<h3 class="dj-section-label">🏢 입주민 빠른 이용</h3>
 <div class="dj-shortcuts">
 <button type="button" data-dj-action="apartment">🏢<br>우리 아파트 찾기</button>
 <button type="button" data-dj-action="apply">✏️<br>방역 신청하기</button>
 <button type="button" data-dj-action="history">📋<br>신청 내역 확인</button>
 <button type="button" data-dj-action="schedule">📅<br>방역 일정 보기</button>
 </div>
+<h3 class="dj-section-label">🔒 관리 담당자 입장</h3>
 <div class="dj-roles">
 <button type="button" data-dj-role="office">🏢 관리사무소 🔒</button>
 <button type="button" data-dj-role="worker">🧰 방역관리 🔒</button>
@@ -472,7 +504,7 @@ show=function(role){
 (function(){
 'use strict';
 const $id=id=>document.getElementById(id);
-function go(id){const el=$id(id);if(el){el.classList.remove('hidden');el.scrollIntoView({behavior:'smooth',block:'start'});}}
+function go(id){const el=$id(id);if(id==='contact-hub'||id==='click-inquiry')$id('contact-hub')?.classList.add('dj-contact-open');if(el){el.classList.remove('hidden');el.scrollIntoView({behavior:'smooth',block:'start'});}}
 function needApt(role){
  if(!$id('home-apt')?.value){go('access');alert('지역 → 시·군·구 → 아파트를 먼저 선택해 주세요.');return false;}
  if(role){if(typeof selectHomeRole==='function')selectHomeRole(role);else alert('화면을 다시 열어 주세요.');}
@@ -480,7 +512,7 @@ function needApt(role){
 }
 document.querySelectorAll('[data-dj-inquiry]').forEach(b=>b.addEventListener('click',()=>{
  const t=b.dataset.djInquiry;
- if(typeof openClickInquiry==='function'){openClickInquiry(t);go('contact-hub');go('click-inquiry');}
+ if(typeof openClickInquiry==='function'){$id('contact-hub')?.classList.add('dj-contact-open');openClickInquiry(t);go('click-inquiry');}
 }));
 document.querySelectorAll('[data-dj-role]').forEach(b=>b.addEventListener('click',()=>needApt(b.dataset.djRole)));
 document.querySelectorAll('[data-dj-action]').forEach(b=>b.addEventListener('click',()=>{
