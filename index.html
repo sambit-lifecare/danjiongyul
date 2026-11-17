@@ -312,7 +312,7 @@ let demoStaffUnlocked=false;
 function staffGateSubmit(){
  const pw=document.getElementById('staff-password').value.trim();
  const msg=document.getElementById('staff-gate-message');
- if(!/^\\d+$/.test(pw)){msg.textContent='숫자 비밀번호를 입력해 주세요.';return;}
+ if(!/^[0-9]+$/.test(pw)){msg.textContent='숫자 비밀번호를 입력해 주세요.';return;}
  if(pw!==DEMO_CODES[requestedStaffRole]){msg.textContent='비밀번호가 일치하지 않습니다.';return;}
  document.getElementById('staff-gate').close();
  document.getElementById('home-role').value=requestedStaffRole;
