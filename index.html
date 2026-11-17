@@ -117,12 +117,11 @@ footer{display:none!important}
 <button type="button" data-dj-inquiry="문자 접수 대행">✉️ 문자 접수 대행　›</button>
 <button type="button" class="dj-wide" data-dj-inquiry="일반 문의">🎧 모든 문의 접수　›</button>
 </div>
-<h3 class="dj-section-label">🏢 입주민 빠른 이용</h3>
-<div class="dj-shortcuts">
-<button type="button" data-dj-action="apartment">🏢<br>우리 아파트 찾기</button>
-<button type="button" data-dj-action="apply">✏️<br>방역 신청하기</button>
-<button type="button" data-dj-action="history">📋<br>신청 내역 확인</button>
-<button type="button" data-dj-action="schedule">📅<br>방역 일정 보기</button>
+<h3 class="dj-section-label">🏠 입주민 방역 신청</h3>
+<div class="dj-primary-apply"><button type="button" data-dj-action="apply">🏠 우리 집 방역 신청하기 <span>아파트 → 동 → 라인 → 층 → 호수 → 신청 확인</span></button></div>
+<div class="dj-shortcuts dj-shortcuts-secondary">
+<button type="button" data-dj-action="history">📋 신청 내역 확인</button>
+<button type="button" data-dj-action="schedule">📅 방역 일정 보기</button>
 </div>
 <h3 class="dj-section-label">🔒 관리 담당자 입장</h3>
 <div class="dj-roles">
@@ -531,6 +530,7 @@ document.querySelectorAll('[data-dj-inquiry]').forEach(b=>b.addEventListener('cl
 document.querySelectorAll('[data-dj-role]').forEach(b=>b.addEventListener('click',()=>needApt(b.dataset.djRole)));
 document.querySelectorAll('[data-dj-action]').forEach(b=>b.addEventListener('click',()=>{
  const a=b.dataset.djAction;
+ if(a==='apply'){window.djStartResidentFlow?.();return;}
  if(a==='apartment'){go('access');return;}
  if(a==='guide'){go('access');return;}
  if(needApt('resident')){
@@ -672,4 +672,44 @@ document.getElementById('qi-apt')?.addEventListener('change',render);
 new MutationObserver(()=>{if(!form.classList.contains('hidden'))render()}).observe(form,{attributes:true,attributeFilter:['class']});
 render();
 })();
-</script></body></html>
+</script>
+<style id="dj-guided-resident-css">
+#danjion-dashboard,#access,#contact-hub,#friendly-bot{box-sizing:border-box;width:100%;max-width:100%;}
+.dj-primary-apply button{width:100%;background:#07569c;color:white;border-radius:13px;padding:18px 12px;font-size:19px;font-weight:800;min-height:78px}
+.dj-primary-apply span{display:block;font-size:13px;font-weight:500;margin-top:6px;color:#e4f1ff}
+.dj-shortcuts-secondary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:10px}
+.dj-shortcuts-secondary button{min-height:58px}
+#dj-flow-banner{display:none;background:#e9f7f0;border:1px solid #a9d8c4;padding:13px 15px;border-radius:12px;margin-bottom:15px;color:#114e38;font-weight:700}
+body.dj-resident-flow #dj-flow-banner{display:block}
+body.dj-resident-flow #access>.actions{display:none}
+body.dj-resident-flow #access{scroll-margin-top:10px}
+#click-inquiry{scroll-margin-top:12px}
+@media(max-width:480px){.dj-primary-apply button{font-size:17px}.dj-primary-apply span{font-size:12px}}
+</style>
+<script id="dj-guided-resident-flow">
+(function(){'use strict';
+const apt=document.getElementById('home-apt');
+const access=document.getElementById('access');
+if(!apt||!access)return;
+const banner=document.createElement('div');banner.id='dj-flow-banner';banner.textContent='① 아파트를 선택하세요 → ② 동·라인·층·호수 → ③ 신청 내용 확인';
+access.insertBefore(banner,access.firstChild.nextSibling);
+let active=false;
+function openNext(){
+ if(!active||!apt.value)return;
+ active=false;
+ document.body.classList.remove('dj-resident-flow');
+ const hub=document.getElementById('contact-hub');hub?.classList.add('dj-contact-open');
+ if(typeof window.openClickInquiry==='function')window.openClickInquiry('방역 신청');
+}
+window.djStartResidentFlow=function(){
+ active=true;document.body.classList.add('dj-resident-flow');
+ if(apt.value){openNext();return;}
+ access.classList.remove('hidden');access.scrollIntoView({behavior:'smooth',block:'start'});
+};
+// Preserve existing apartment selection logic; continue only when a resident initiated the guided flow.
+const previous=window.chooseHomeApt;
+if(typeof previous==='function')window.chooseHomeApt=function(){const result=previous.apply(this,arguments);if(active&&apt.value)queueMicrotask(openNext);return result;};
+apt.addEventListener('change',()=>{if(active&&apt.value)queueMicrotask(openNext)});
+})();
+</script>
+</body></html>
