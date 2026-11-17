@@ -107,7 +107,22 @@ footer{display:none!important}
  #access h3{margin-top:18px}
 }
 </style>
-</head><body><main><header><div class="brand"><img src="logo.svg" alt="단지온결 로고"><div><h1>단지온결</h1><div class="sub">우리 아파트 생활을 더 편리하게</div></div></div><span class="badge">우리 아파트 생활을 더 편리하게</span></header><section id="home-hero" aria-label="단지온결 소개"><div class="hero-copy"><h2>함께 만드는<br><em>더 좋은</em> 우리 아파트</h2><p>입주민, 관리사무소, 방역업체가 함께하는<br>스마트한 아파트 관리 서비스</p></div></section>
+<style id="dj-extra-services-css">
+.dj-partner-links{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.dj-partner-links a{display:inline-block;text-decoration:none;border:1px solid #cbddea;background:#f3f8ff;color:#07569c;border-radius:12px;padding:10px 13px;font-weight:750;font-size:14px}.dj-quote-card{border:1px solid #cddfe8;background:#fff;border-radius:20px;padding:20px;margin:18px 0;box-shadow:0 5px 20px #17334d0b}.dj-quote-card h2{margin:0 0 8px}.dj-q-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}.dj-q-grid button{background:#eaf3fa;color:#174365;border:1px solid #cbdfea;min-height:55px;padding:10px}.dj-q-grid button[aria-pressed="true"]{background:#07569c;color:#fff}.dj-q-result{background:#edf8f1;border:1px solid #badcc8;border-radius:14px;padding:15px;margin:14px 0}.dj-q-result strong{font-size:26px;color:#137340}.dj-q-field{display:grid;gap:5px;margin:10px 0}.dj-q-field input,.dj-q-field select{width:100%;border:1px solid #bbcfdf;border-radius:11px;padding:13px;font:inherit;background:white;min-height:48px}.dj-q-note{font-size:13px;line-height:1.65;color:#526b7c}.dj-q-actions{display:flex;gap:8px;flex-wrap:wrap}.dj-q-actions button{flex:1;min-width:130px}.dj-q-hidden{display:none!important}@media(max-width:540px){.dj-quote-card{padding:15px}.dj-partner-links{flex-direction:column;align-items:stretch}.dj-partner-links a{text-align:center}.dj-q-grid{gap:7px}.dj-q-grid button{font-size:14px;padding:8px}}
+</style></head><body><main><header><div class="brand"><img src="logo.svg" alt="단지온결 로고"><div><h1>단지온결</h1><div class="sub">우리 아파트 생활을 더 편리하게</div></div></div><span class="badge">우리 아파트 생활을 더 편리하게</span><div class="dj-partner-links"><a href="#dj-partner-quotes" data-dj-service="hearing">🎧 독일프리미엄보청기</a><a href="#dj-partner-quotes" data-dj-service="tank">💧 티엠개발라이프케어</a></div></header>
+<section class="dj-quote-card" id="dj-partner-quotes" aria-label="출장 상담 및 저수조 청소 예상 견적">
+<h2>🎧 보청기 · 💧 저수조 청소 예상 견적</h2><p class="dj-q-note">원하시는 서비스를 선택하고 버튼만 눌러 예상 금액을 확인하세요. 견적 내용을 복사하거나 문자 앱으로 전달할 수 있습니다.</p>
+<div class="dj-q-grid" id="dj-service-options"><button type="button" data-service="hearing" aria-pressed="false">🎧 독일프리미엄보청기</button><button type="button" data-service="tank" aria-pressed="true">💧 저수조 청소</button></div>
+<div id="dj-tank-options"><h3>저수조 용량 선택</h3><div class="dj-q-grid" id="dj-tank-buttons"></div><p class="dj-q-note">선택한 용량의 <b>기본 현장 기준 전국 출장비·작업 인원·장비·이동 거리 비용을 모두 포함한 총액</b>입니다. 별도 출장비를 추가하지 않습니다. 다만 특수 장비·밀폐공간 안전조치·장거리 도서지역 등 일반 조건을 벗어난 현장은 확인 후 별도 견적이 필요합니다.</p></div>
+<div id="dj-hearing-options" class="dj-q-hidden"><h3>보청기 상담 유형 선택</h3><div class="dj-q-grid" id="dj-hearing-buttons"></div><p class="dj-q-note">보청기 가격은 모델·청력 상태·지원 대상 여부에 따라 달라집니다. 출장 상담 비용 포함 여부와 실제 제품 가격은 담당자 확인 후 확정됩니다.</p></div>
+<div class="dj-q-result" aria-live="polite"><div id="dj-quote-summary">저수조 청소 · 10~30톤</div><strong id="dj-quote-price">25만~40만 원</strong><div class="dj-q-note" id="dj-quote-included">출장·인력·장비·이동 비용 포함</div></div>
+<div class="dj-q-field"><label for="dj-quote-region"><b>작업 지역</b></label><select id="dj-quote-region"><option value="">지역 선택</option></select></div>
+<div class="dj-q-field"><label for="dj-quote-name"><b>신청자 이름</b></label><input id="dj-quote-name" autocomplete="name" placeholder="이름을 입력하세요"></div>
+<div class="dj-q-field"><label for="dj-quote-phone"><b>연락받을 전화번호</b></label><input id="dj-quote-phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="010-0000-0000"></div>
+<div class="dj-q-actions"><button type="button" id="dj-copy-quote">📋 견적 내용 복사</button><button type="button" id="dj-sms-quote" style="background:#23864e">✉ 문자 앱으로 접수</button></div>
+<p class="dj-q-note" id="dj-quote-status" role="status">※ 표시 금액은 초기 제안용 예상 가격으로, 전국 실거래 평균이나 해당 업체의 확정 가격이 아닙니다. 담당자가 현장 조건을 확인해 최종 가격을 안내합니다. 문자 앱에서 직접 수신자를 지정하고 전송해야 접수가 진행됩니다. 이 화면만으로 담당자에게 자동 접수되지는 않습니다.</p>
+</section>
+<section id="home-hero" aria-label="단지온결 소개"><div class="hero-copy"><h2>함께 만드는<br><em>더 좋은</em> 우리 아파트</h2><p>입주민, 관리사무소, 방역업체가 함께하는<br>스마트한 아파트 관리 서비스</p></div></section>
 <section id="danjion-dashboard" aria-label="단지온 간편 메뉴">
 <h2>⚡ 간편 문의</h2>
 <div class="dj-grid">
@@ -756,4 +771,18 @@ document.getElementById('home-apt-results')?.addEventListener('click',e=>{
 #dj-unit-wizard .dj-pair-grid button,#dj-unit-wizard .dj-floor-grid button{min-height:62px;font-size:17px}
 #dj-unit-wizard .dj-pad button{min-height:65px}
 </style>
-</body></html>
+<script id="dj-extra-services-js">(()=>{
+const tank=[['10~30톤','25만~40만 원'],['31~50톤','35만~55만 원'],['51~100톤','50만~80만 원'],['101~300톤','70만~120만 원'],['301~500톤','100만~150만 원'],['501~1,000톤','120만~190만 원'],['1,001~2,000톤','180만~290만 원'],['2,001~3,000톤','280만~400만 원']];
+const hearing=[['실속형 · 한쪽','80만~110만 원'],['일반형 · 한쪽','110만~150만 원'],['고급형 · 한쪽','150만~200만 원'],['실속형 · 양쪽','150만~200만 원'],['고급형 · 양쪽','250만~350만 원']];
+let service='tank',tankIndex=0,hearingIndex=0;
+const $=id=>document.getElementById(id);
+function renderButtons(id,arr,selected,fn){const root=$(id);root.replaceChildren();arr.forEach(([label],i)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.setAttribute('aria-pressed',String(i===selected));b.addEventListener('click',()=>fn(i));root.append(b)})}
+function update(){document.querySelectorAll('#dj-service-options [data-service]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.service===service)));$('dj-tank-options').classList.toggle('dj-q-hidden',service!=='tank');$('dj-hearing-options').classList.toggle('dj-q-hidden',service!=='hearing');renderButtons('dj-tank-buttons',tank,tankIndex,i=>{tankIndex=i;update()});renderButtons('dj-hearing-buttons',hearing,hearingIndex,i=>{hearingIndex=i;update()});const item=service==='tank'?tank[tankIndex]:hearing[hearingIndex];$('dj-quote-summary').textContent=(service==='tank'?'저수조 청소 · ':'보청기 · ')+item[0];$('dj-quote-price').textContent=item[1];$('dj-quote-included').textContent=service==='tank'?'기본 현장 기준 출장·작업 인원·장비·이동 거리 비용 포함':'제품 및 상담 조건에 따라 최종 가격 변동';}
+const regions=['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주'];regions.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;$('dj-quote-region').append(o)});
+document.querySelectorAll('#dj-service-options [data-service]').forEach(b=>b.addEventListener('click',()=>{service=b.dataset.service;update()}));document.querySelectorAll('.dj-partner-links [data-dj-service]').forEach(a=>a.addEventListener('click',()=>{service=a.dataset.djService;update()}));
+function message(){const item=service==='tank'?tank[tankIndex]:hearing[hearingIndex];return '[단지온결 예상 견적 상담 요청]\n서비스: '+(service==='tank'?'티엠개발라이프케어 저수조 청소':'독일프리미엄보청기')+'\n선택: '+item[0]+'\n예상 가격: '+item[1]+'\n지역: '+($('dj-quote-region').value||'미선택')+'\n이름: '+($('dj-quote-name').value.trim()||'미입력')+'\n연락처: '+($('dj-quote-phone').value.trim()||'미입력')+'\n※ 예상 견적이며 담당자 확인 후 최종 확정'}
+function valid(){if(!$('dj-quote-region').value||!$('dj-quote-name').value.trim()||!/^0[0-9 -]{8,14}$/.test($('dj-quote-phone').value.trim())){$('dj-quote-status').textContent='지역·이름·연락처를 먼저 입력해 주세요.';return false}return true}
+$('dj-copy-quote').addEventListener('click',async()=>{if(!valid())return;try{await navigator.clipboard.writeText(message());$('dj-quote-status').textContent='견적 내용이 복사되었습니다. 담당자에게 전달해 주세요. 자동 접수는 되지 않았습니다.'}catch(e){$('dj-quote-status').textContent='복사할 수 없습니다. 문자 앱으로 보내기를 이용해 주세요.'}});
+$('dj-sms-quote').addEventListener('click',()=>{if(!valid())return;const separator=/iPad|iPhone|iPod/.test(navigator.userAgent)?'&':'?';location.href='sms:'+separator+'body='+encodeURIComponent(message());$('dj-quote-status').textContent='문자 앱이 열리면 담당자 번호를 입력하고 전송해 주세요. 자동 전송은 되지 않습니다.'});
+update();
+})();</script></body></html>
