@@ -612,14 +612,14 @@ const building=document.getElementById('click-building'),unit=document.getElemen
 if(!building||!unit)return;
 const wizard=document.createElement('div');wizard.id='dj-unit-wizard';
 form.querySelector('.qi-config-grid').before(wizard);
-let stage='building',lastApt='',line=0,floor=0,mode='';
+let stage='building',lastApt='',line=0,floor=0,mode='line';
 const el=(tag,cls,txt,parent)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;if(parent)parent.append(n);return n};
 function apartment(){return document.getElementById('home-apt')?.value||document.getElementById('qi-apt')?.value||''}
 
 function button(host,text,fn,active=false){const b=el('button',active?'dj-choice-active':'',text,host);b.type='button';b.onclick=fn;return b}
 function reset(){building.value='';unit.value='';line=0;floor=0;stage='building'}
 function render(){
- const apt=apartment();if(apt!==lastApt){lastApt=apt;reset();mode=''}
+ const apt=apartment();if(apt!==lastApt){lastApt=apt;reset();mode='line'}
  const lh=true;wizard.replaceChildren();
  const steps=el('div','dj-steps','',wizard);
  const names=lh?['① 동 선택','② 라인 선택','③ 층 선택','④ 호수 선택','⑤ 신청 확인']:['① 동 선택','② 호수 선택','③ 신청 확인'];
@@ -638,7 +638,7 @@ function render(){
  el('div','dj-value',summary,wizard);
  if(stage==='done'){
   el('div','dj-picked','✓ '+building.value+'동 '+unit.value+'호가 선택되었습니다. 아래 신청 내용을 확인하세요.',wizard);
-  button(wizard,'동·호수 다시 선택',()=>{reset();render()});return;
+  button(wizard,'동·호수 다시 선택',()=>{reset();render()});const next=button(wizard,'✓ 신청 내용 확인하고 접수하기',()=>{if(typeof window.submitClickInquiry==='function')window.submitClickInquiry()});next.className='dj-finish';return;
  }
  if(stage==='line'){
   const choices=el('div','dj-pair-grid','',wizard);
@@ -653,7 +653,7 @@ function render(){
  }
  if(stage==='unit'&&isLine){
   const choices=el('div','dj-pair-grid','',wizard);
-  for(const suffix of [line-1,line]){const u=String(floor*100+suffix);button(choices,u+'호',()=>{unit.value=u;stage='done';render()})}
+  for(const suffix of [line-1,line]){const u=String(floor*100+suffix);button(choices,u+'호',()=>{unit.value=u;stage='done';render();document.getElementById('click-inquiry')?.scrollIntoView({behavior:'smooth',block:'start'})})}
   button(wizard,'← 층 다시 선택',()=>{stage='floor';render()});return;
  }
  const input=stage==='building'?building:unit;
@@ -690,26 +690,50 @@ body.dj-resident-flow #access{scroll-margin-top:10px}
 (function(){'use strict';
 const apt=document.getElementById('home-apt');
 const access=document.getElementById('access');
-if(!apt||!access)return;
-const banner=document.createElement('div');banner.id='dj-flow-banner';banner.textContent='① 아파트를 선택하세요 → ② 동·라인·층·호수 → ③ 신청 내용 확인';
+const form=document.getElementById('click-inquiry');
+if(!apt||!access||!form)return;
+const banner=document.createElement('div');banner.id='dj-flow-banner';
+banner.textContent='① 아파트 → ② 동 → ③ 라인 → ④ 층 → ⑤ 호수 → ⑥ 접수';
 access.insertBefore(banner,access.firstChild.nextSibling);
-let active=false;
-function openNext(){
- if(!active||!apt.value)return;
- active=false;
- document.body.classList.remove('dj-resident-flow');
- const hub=document.getElementById('contact-hub');hub?.classList.add('dj-contact-open');
+let lastOpened='',scheduled=false;
+function advance(){
+ scheduled=false;
+ if(!apt.value||apt.value===lastOpened)return;
+ lastOpened=apt.value;
+ document.body.classList.add('dj-resident-flow');
+ document.getElementById('contact-hub')?.classList.add('dj-contact-open');
  if(typeof window.openClickInquiry==='function')window.openClickInquiry('방역 신청');
+ // Focus the next actionable stage, without requiring another home-button click.
+ requestAnimationFrame(()=>form.scrollIntoView({behavior:'smooth',block:'start'}));
 }
+function scheduleAdvance(){if(!apt.value){lastOpened='';return}if(scheduled)return;scheduled=true;queueMicrotask(advance)}
 window.djStartResidentFlow=function(){
- active=true;document.body.classList.add('dj-resident-flow');
- if(apt.value){openNext();return;}
+ document.body.classList.add('dj-resident-flow');
+ if(apt.value){lastOpened='';scheduleAdvance();return}
  access.classList.remove('hidden');access.scrollIntoView({behavior:'smooth',block:'start'});
 };
-// Preserve existing apartment selection logic; continue only when a resident initiated the guided flow.
 const previous=window.chooseHomeApt;
-if(typeof previous==='function')window.chooseHomeApt=function(){const result=previous.apply(this,arguments);if(active&&apt.value)queueMicrotask(openNext);return result;};
-apt.addEventListener('change',()=>{if(active&&apt.value)queueMicrotask(openNext)});
+if(typeof previous==='function')window.chooseHomeApt=function(){
+ const result=previous.apply(this,arguments);
+ if(apt.value)scheduleAdvance();else lastOpened='';
+ return result;
+};
+apt.addEventListener('change',scheduleAdvance);
+// A selected apartment can be changed without leaving the flow.
+document.getElementById('home-apt-results')?.addEventListener('click',e=>{
+ if(e.target.closest('button.apt-item'))queueMicrotask(scheduleAdvance);
+});
 })();
 </script>
+<style id="dj-elderly-flow-css">
+#dj-unit-wizard .dj-finish{width:100%;background:#07569c;color:#fff;min-height:66px;font-size:19px;margin-top:12px;border-radius:12px;font-weight:800}
+#click-inquiry #dj-choice-wrap{display:none!important}
+#click-inquiry>p.muted,#click-inquiry>.muted-note{display:none!important}
+#click-inquiry>button.alt{display:none!important}
+#click-inquiry label[for="click-message"],#click-inquiry #click-message{display:none!important}
+#click-inquiry>.actions{display:none!important}
+#dj-unit-wizard button{touch-action:manipulation}
+#dj-unit-wizard .dj-pair-grid button,#dj-unit-wizard .dj-floor-grid button{min-height:62px;font-size:17px}
+#dj-unit-wizard .dj-pad button{min-height:65px}
+</style>
 </body></html>
