@@ -161,8 +161,28 @@ function enterApt(){const selected=$('home-apt').value;if(!selected){alert('아�
  $('apt-search').value=parts[0];filterApts();$('apt').value=selected;$('apt-search').disabled=true;$('apt').disabled=true;
  $('office-scope').textContent=parts[0]+' · '+currentAddress+' (이 브라우저의 시연 데이터)';$('worker-scope').textContent=parts[0]+' · '+currentAddress+' (이 브라우저의 시연 데이터)';
  const addressField=$('field-address');if(addressField)addressField.value=currentAddress;show(currentRole)}
-async function loadNationalApts(){try{if(Array.isArray(window.DANJION_APARTMENTS)){nationalApts=window.DANJION_APARTMENTS}else{const res=await fetch('./apartments.json',{cache:'no-cache'});if(!res.ok)throw new Error('주소 파일을 불러오지 못했습니다');nationalApts=await res.json()}aptSearchReady=true;$('apt-load-state').textContent='전국 아파트 주소 '+nationalApts.length.toLocaleString('ko-KR')+'건 준비 완료 · 위에서 지역을 선택하면 구·시·군과 아파트 목록이 자동으로 나옵니다.';drawDistricts();filterHomeApts();filterApts()}catch(e){$('apt-load-state').textContent='주소 데이터 연결 실패: apartments-data.js 파일을 포함해 전체 파일을 함께 업로드해 주세요.';filterHomeApts();filterApts()}}
-drawRegions();filterHomeApts();filterApts();loadNationalApts();render();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+async function loadNationalApts(){
+ try{
+  let data=window.DANJION_APARTMENTS;
+  if(!Array.isArray(data)||data.length===0){
+   const res=await fetch('./apartments.json',{cache:'no-store'});
+   if(!res.ok)throw new Error('apartments.json HTTP '+res.status);
+   data=await res.json();
+  }
+  if(!Array.isArray(data)||!data.length)throw new Error('아파트 데이터가 비어 있습니다');
+  nationalApts=data.filter(a=>Array.isArray(a)&&typeof a[0]==='string'&&typeof a[1]==='string');
+  aptSearchReady=true;
+  $('apt-load-state').textContent='전국 아파트 주소 '+nationalApts.length.toLocaleString('ko-KR')+'건 준비 완료';
+  if(typeof drawDistricts==='function')drawDistricts();
+  filterHomeApts();filterApts();
+ }catch(e){
+  aptSearchReady=false;
+  $('apt-load-state').textContent='주소 데이터 연결 실패: '+e.message+' · 기존 apartments-data.js / apartments.json 파일을 확인해 주세요.';
+  if(typeof drawDistricts==='function')drawDistricts();
+ }
+}
+// Wait until all feature scripts have defined their final region/district handlers.
+window.addEventListener('DOMContentLoaded',()=>{drawRegions();filterHomeApts();filterApts();loadNationalApts();render()},{once:true});if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script><script>
 // v0.5 시연: 실제 권한/공유 서버 없음. localStorage는 이 브라우저에서만 유효합니다.
 const FIELD_KEY='wooridanji-field-v05';let fieldItems=[];let fieldPhotos={};
@@ -274,8 +294,8 @@ function submitClickInquiry(){const apt=$('home-apt').value,building=$('click-bu
 function selectHomeRole(role){$('home-role').value=role;syncHomeRole();if(!$('home-apt').value){alert('먼저 지역·구·시·군에서 아파트를 선택해 주세요.');$('access').scrollIntoView({behavior:'smooth',block:'start'});return}enterApt()}
 // Late initialisation: original script starts loading the apartment JSON earlier.
 function setupV2(){selectedRegion='전국';chosenDistrict='';drawRegions();drawDistricts();filterHomeApts();$('home-apt-search').value='';document.querySelectorAll('#contact-hub .contact-cards button').forEach(b=>{const t=b.getAttribute('onclick')?.match(/setInquiryType\('([^']+)'\)/)?.[1];if(t)b.onclick=()=>openClickInquiry(t)});$('inquiry-form').classList.add('hidden');$('home-role').closest('label')?.classList.add('hidden');document.querySelector('label[for="home-role"]')?.classList.add('hidden');$('home-role').classList.add('hidden');document.querySelector('#access > .actions')?.classList.add('hidden');}
-setupV2();
-// The original loader calls filterHomeApts after JSON arrives; refresh district choices then.
+window.addEventListener('DOMContentLoaded',setupV2,{once:true});
+// Refresh district choices after address data loads.
 const originalLoadNationalApts=loadNationalApts;
 // Data is loaded by an already running promise; polling is not needed: intercept assignment via a one-shot check on window load.
 const aptLoadObserver=new MutationObserver(()=>{if(aptSearchReady){drawDistricts();filterHomeApts();aptLoadObserver.disconnect()}});aptLoadObserver.observe($('apt-load-state'),{childList:true,subtree:true,characterData:true});if(aptSearchReady){drawDistricts();filterHomeApts();aptLoadObserver.disconnect()}
