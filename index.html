@@ -581,4 +581,95 @@ if(ci){
 }
 })();
 </script>
-<script id="lh-addon">(function(){'use strict';const KEY='danjion-lh-config-v1';function config(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}function enabled(){return !!config()[currentApt]}window.lhToggle=function(v){if(!currentApt)return;const all=config();all[currentApt]=!!v;try{localStorage.setItem(KEY,JSON.stringify(all))}catch(e){alert('LH 설정을 저장하지 못했습니다.');return}window.lhRender()};window.lhRender=function(){const active=!!currentApt&&enabled();const arr=typeof fieldScope==='function'?fieldScope():[];const total=arr.length,done=arr.filter(x=>x.status==='완료').length,rate=total?Math.round(done/total*1000)/10:0;const needed=Math.max(0,Math.ceil(total*.65)-done);for(const role of ['office','worker']){const cb=document.getElementById('lh-'+role+'-enabled'),detail=document.getElementById('lh-'+role+'-detail');if(!cb||!detail)continue;cb.checked=active;detail.classList.toggle('hidden',!active);if(!active)continue;document.getElementById('lh-'+role+'-percent').textContent=rate+'%';document.getElementById('lh-'+role+'-fill').style.width=rate+'%';document.getElementById('lh-'+role+'-counts').textContent='전체 대상 '+total+'세대 · 방역 완료 '+done+'세대 · 미완료 '+(total-done)+'세대';document.getElementById('lh-'+role+'-goal').textContent=!total?'대상 세대 작업표를 등록하면 65% 목표를 계산합니다.':needed?'65% 목표까지 '+needed+'세대 추가 완료 필요':'65% 목표 달성';}};const originalFieldRender=window.fieldRender;window.fieldRender=function(){originalFieldRender();window.lhRender()};window.lhRender();})();</script><style id="dj-keypad-style">.dj-fallback{width:100%;grid-column:1/-1}.dj-fallback-display{padding:12px;border:1px solid #b9d4e9;border-radius:10px;background:#fff;font-weight:700;margin:6px 0}.dj-fallback-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.dj-fallback-grid button{min-height:50px;font-size:17px;background:#e7f2fa;color:#123f68}.dj-fallback-grid button:last-child{background:#07569c;color:white}</style></body></html>
+<script id="lh-addon">(function(){'use strict';const KEY='danjion-lh-config-v1';function config(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}function enabled(){return !!config()[currentApt]}window.lhToggle=function(v){if(!currentApt)return;const all=config();all[currentApt]=!!v;try{localStorage.setItem(KEY,JSON.stringify(all))}catch(e){alert('LH 설정을 저장하지 못했습니다.');return}window.lhRender()};window.lhRender=function(){const active=!!currentApt&&enabled();const arr=typeof fieldScope==='function'?fieldScope():[];const total=arr.length,done=arr.filter(x=>x.status==='완료').length,rate=total?Math.round(done/total*1000)/10:0;const needed=Math.max(0,Math.ceil(total*.65)-done);for(const role of ['office','worker']){const cb=document.getElementById('lh-'+role+'-enabled'),detail=document.getElementById('lh-'+role+'-detail');if(!cb||!detail)continue;cb.checked=active;detail.classList.toggle('hidden',!active);if(!active)continue;document.getElementById('lh-'+role+'-percent').textContent=rate+'%';document.getElementById('lh-'+role+'-fill').style.width=rate+'%';document.getElementById('lh-'+role+'-counts').textContent='전체 대상 '+total+'세대 · 방역 완료 '+done+'세대 · 미완료 '+(total-done)+'세대';document.getElementById('lh-'+role+'-goal').textContent=!total?'대상 세대 작업표를 등록하면 65% 목표를 계산합니다.':needed?'65% 목표까지 '+needed+'세대 추가 완료 필요':'65% 목표 달성';}};const originalFieldRender=window.fieldRender;window.fieldRender=function(){originalFieldRender();window.lhRender()};window.lhRender();})();</script><style id="dj-keypad-style">.dj-fallback{width:100%;grid-column:1/-1}.dj-fallback-display{padding:12px;border:1px solid #b9d4e9;border-radius:10px;background:#fff;font-weight:700;margin:6px 0}.dj-fallback-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.dj-fallback-grid button{min-height:50px;font-size:17px;background:#e7f2fa;color:#123f68}.dj-fallback-grid button:last-child{background:#07569c;color:white}</style><style id="dj-click-unit-wizard-style">
+#click-inquiry .qi-config-grid{display:none!important}
+#dj-unit-wizard{margin:18px 0;padding:16px;border:1px solid #c9dfea;border-radius:16px;background:#f6fbff}
+#dj-unit-wizard .dj-steps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+#dj-unit-wizard .dj-step{padding:9px 12px;border-radius:10px;background:#e5edf5;color:#37536a;font-weight:700}
+#dj-unit-wizard .dj-step.active{background:#07569c;color:#fff}
+#dj-unit-wizard .dj-stage{font-weight:800;margin:10px 0}
+#dj-unit-wizard .dj-value{padding:14px;border:1px solid #bbd0e2;background:white;border-radius:10px;min-height:52px;font-size:21px;font-weight:800;text-align:center}
+#dj-unit-wizard .dj-pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+#dj-unit-wizard .dj-pad button{min-height:53px;font-size:19px;background:#e4f0f9;color:#0b4678;border:1px solid #c4dced}
+#dj-unit-wizard .dj-pad button.dj-next{background:#07569c;color:white;grid-column:span 3;font-size:17px}
+#dj-unit-wizard .dj-pad button.dj-back{background:#f1e9e3;color:#6a4736}
+#dj-unit-wizard .dj-help{font-size:13px;color:#526b7c;margin:9px 0}
+#dj-unit-wizard .dj-picked{background:#e6f7ed;border-radius:9px;padding:11px;margin-top:12px;font-weight:700}
+#dj-unit-wizard .dj-edit{background:#e4edf6;color:#07569c;margin-top:8px}
+#dj-choice-wrap:empty{display:none}
+#dj-unit-wizard .dj-pair-grid,#dj-unit-wizard .dj-floor-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+#dj-unit-wizard .dj-pair-grid button,#dj-unit-wizard .dj-floor-grid button{background:#e5f1fb;color:#07569c;min-height:52px;padding:9px}
+#dj-unit-wizard .dj-mode-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#dj-unit-wizard .dj-mode-row button{background:#e7f1f9;color:#07569c}
+#dj-unit-wizard .dj-mode-row button.dj-choice-active{background:#07569c;color:white}
+#dj-unit-wizard .dj-steps{flex-wrap:wrap}
+@media(max-width:480px){#dj-unit-wizard .dj-pair-grid,#dj-unit-wizard .dj-floor-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<script id="dj-click-unit-wizard-script">
+(function(){'use strict';
+const form=document.getElementById('click-inquiry');if(!form)return;
+const building=document.getElementById('click-building'),unit=document.getElementById('click-unit');
+if(!building||!unit)return;
+const wizard=document.createElement('div');wizard.id='dj-unit-wizard';
+form.querySelector('.qi-config-grid').before(wizard);
+let stage='building',lastApt='',line=0,floor=0,mode='';
+const el=(tag,cls,txt,parent)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;if(parent)parent.append(n);return n};
+function apartment(){return document.getElementById('home-apt')?.value||document.getElementById('qi-apt')?.value||''}
+
+function button(host,text,fn,active=false){const b=el('button',active?'dj-choice-active':'',text,host);b.type='button';b.onclick=fn;return b}
+function reset(){building.value='';unit.value='';line=0;floor=0;stage='building'}
+function render(){
+ const apt=apartment();if(apt!==lastApt){lastApt=apt;reset();mode=''}
+ const lh=true;wizard.replaceChildren();
+ const steps=el('div','dj-steps','',wizard);
+ const names=lh?['① 동 선택','② 라인 선택','③ 층 선택','④ 호수 선택','⑤ 신청 확인']:['① 동 선택','② 호수 선택','③ 신청 확인'];
+ const keys=lh?['building','line','floor','unit','done']:['building','unit','done'];
+ names.forEach((n,i)=>el('span','dj-step'+(stage===keys[i]?' active':''),n,steps));
+ if(lh){
+  el('p','dj-help','전국 아파트 공통 선택: 라인별 선택은 층당 최대 24호의 번호 선택 보조입니다. 실제 동·라인·층·호수는 단지별로 다르므로 확인 후 선택하세요.',wizard);
+  const modeBox=el('div','dj-mode-row','',wizard);
+  button(modeBox,'동 → 라인 → 층 → 호수',()=>{mode='line';line=0;floor=0;unit.value='';stage='building';render()},mode!=='number');
+  button(modeBox,'동·호수 숫자 버튼 선택',()=>{mode='number';line=0;floor=0;unit.value='';stage='building';render()},mode==='number');
+ }
+ const isLine=lh&&mode!=='number';
+ const prompt={building:'동 번호를 선택하세요',line:'라인을 선택하세요',floor:'층을 선택하세요',unit:'호수를 선택하세요',done:'동·호수 선택 완료'};
+ el('div','dj-stage',prompt[stage],wizard);
+ const summary=building.value?(building.value+'동'+(line?' · '+(line-1)+'-'+line+'라인':'')+(floor?' · '+floor+'층':'')+(unit.value?' · '+unit.value+'호':'')):'동 번호 선택 중';
+ el('div','dj-value',summary,wizard);
+ if(stage==='done'){
+  el('div','dj-picked','✓ '+building.value+'동 '+unit.value+'호가 선택되었습니다. 아래 신청 내용을 확인하세요.',wizard);
+  button(wizard,'동·호수 다시 선택',()=>{reset();render()});return;
+ }
+ if(stage==='line'){
+  const choices=el('div','dj-pair-grid','',wizard);
+  for(let first=1;first<=23;first+=2){const f=first;button(choices,f+'-'+(f+1)+'라인',()=>{line=f+1;floor=0;unit.value='';stage='floor';render()})}
+  button(wizard,'← 동 다시 선택',()=>{stage='building';render()});return;
+ }
+ if(stage==='floor'){
+  el('p','dj-help','실제 층수 확인 후 선택하세요. 존재하지 않는 층은 선택하지 마세요.',wizard);
+  const choices=el('div','dj-floor-grid','',wizard);
+  for(let n=1;n<=30;n++){const f=n;button(choices,n+'층',()=>{floor=f;unit.value='';stage='unit';render()})}
+  button(wizard,'← 라인 다시 선택',()=>{stage='line';render()});return;
+ }
+ if(stage==='unit'&&isLine){
+  const choices=el('div','dj-pair-grid','',wizard);
+  for(const suffix of [line-1,line]){const u=String(floor*100+suffix);button(choices,u+'호',()=>{unit.value=u;stage='done';render()})}
+  button(wizard,'← 층 다시 선택',()=>{stage='floor';render()});return;
+ }
+ const input=stage==='building'?building:unit;
+ el('p','dj-help',stage==='building'?'예: 101동 → 1, 0, 1 순서로 누르세요.':'예: 1202호 → 1, 2, 0, 2 순서로 누르세요.',wizard);
+ const pad=el('div','dj-pad','',wizard);
+ for(const n of ['1','2','3','4','5','6','7','8','9','지우기','0','전체삭제']){
+  button(pad,n,()=>{if(n==='지우기')input.value=input.value.slice(0,-1);else if(n==='전체삭제')input.value='';else if(input.value.length<6)input.value+=n;render()});
+ }
+ const next=el('button','dj-next',stage==='building'?(isLine?'✓ 동 선택 → 라인 선택':'✓ 동 선택 → 호수 선택'):'✓ 호수 선택 → 신청 확인',pad);
+ next.type='button';next.onclick=()=>{if(!/^\d{1,6}$/.test(input.value)||Number(input.value)<1){alert('번호를 버튼으로 선택해 주세요.');return}if(stage==='building'){stage=isLine?'line':'unit';unit.value=''}else stage='done';render();wizard.scrollIntoView({behavior:'smooth',block:'nearest'})};
+}
+const originalOpen=window.openClickInquiry;
+if(typeof originalOpen==='function')window.openClickInquiry=function(){originalOpen.apply(this,arguments);render()};
+document.getElementById('home-apt')?.addEventListener('change',render);
+document.getElementById('qi-apt')?.addEventListener('change',render);
+new MutationObserver(()=>{if(!form.classList.contains('hidden'))render()}).observe(form,{attributes:true,attributeFilter:['class']});
+render();
+})();
+</script></body></html>
