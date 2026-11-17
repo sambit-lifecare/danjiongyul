@@ -605,6 +605,12 @@ if(ci){
 #dj-unit-wizard .dj-steps{flex-wrap:wrap}
 @media(max-width:480px){#dj-unit-wizard .dj-pair-grid,#dj-unit-wizard .dj-floor-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
+<style id="dj-building-preset-css">
+#dj-unit-wizard .dj-building-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0;max-height:350px;overflow-y:auto;overscroll-behavior:contain}
+#dj-unit-wizard .dj-building-grid button{min-height:56px;font-size:18px;font-weight:750;background:#e5f1fb;color:#07569c;border:1px solid #c4dced;border-radius:10px}
+#dj-unit-wizard .dj-building-grid button:focus-visible{outline:3px solid #f0a52a;outline-offset:2px}
+@media(max-width:480px){#dj-unit-wizard .dj-building-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
 <script id="dj-click-unit-wizard-script">
 (function(){'use strict';
 const form=document.getElementById('click-inquiry');if(!form)return;
@@ -617,7 +623,7 @@ const el=(tag,cls,txt,parent)=>{const n=document.createElement(tag);if(cls)n.cla
 function apartment(){return document.getElementById('home-apt')?.value||document.getElementById('qi-apt')?.value||''}
 
 function button(host,text,fn,active=false){const b=el('button',active?'dj-choice-active':'',text,host);b.type='button';b.onclick=fn;return b}
-function reset(){building.value='';unit.value='';line=0;floor=0;stage='building'}
+function reset(){building.value='';unit.value='';line=0;floor=0;stage='building';delete wizard.dataset.manualBuilding}
 function render(){
  const apt=apartment();if(apt!==lastApt){lastApt=apt;reset();mode='line'}
  const lh=true;wizard.replaceChildren();
@@ -656,8 +662,22 @@ function render(){
   for(const suffix of [line-1,line]){const u=String(floor*100+suffix);button(choices,u+'호',()=>{unit.value=u;stage='done';render();document.getElementById('click-inquiry')?.scrollIntoView({behavior:'smooth',block:'start'})})}
   button(wizard,'← 층 다시 선택',()=>{stage='floor';render()});return;
  }
+ if(stage==='building' && !wizard.dataset.manualBuilding){
+  el('p','dj-help','우리 아파트의 동 번호를 한 번 누르세요. 목록에 없으면 아래 다른 동 번호 버튼을 이용하세요.',wizard);
+  const choices=el('div','dj-building-grid','',wizard);
+  const common=[];
+  for(let n=101;n<=130;n++)common.push(n);
+  for(let n=201;n<=220;n++)common.push(n);
+  for(let n=301;n<=310;n++)common.push(n);
+  common.forEach(n=>button(choices,n+'동',()=>{
+   building.value=String(n);unit.value='';line=0;floor=0;
+   stage=isLine?'line':'unit';render();wizard.scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+  button(wizard,'목록에 없는 동 번호 선택',()=>{wizard.dataset.manualBuilding='yes';render()});
+  return;
+ }
  const input=stage==='building'?building:unit;
- el('p','dj-help',stage==='building'?'예: 101동 → 1, 0, 1 순서로 누르세요.':'예: 1202호 → 1, 2, 0, 2 순서로 누르세요.',wizard);
+ el('p','dj-help',stage==='building'?'목록에 없는 동 번호를 아래 숫자 버튼으로 선택하세요.':'호수 번호를 아래 숫자 버튼으로 선택하세요.',wizard);
  const pad=el('div','dj-pad','',wizard);
  for(const n of ['1','2','3','4','5','6','7','8','9','지우기','0','전체삭제']){
   button(pad,n,()=>{if(n==='지우기')input.value=input.value.slice(0,-1);else if(n==='전체삭제')input.value='';else if(input.value.length<6)input.value+=n;render()});
